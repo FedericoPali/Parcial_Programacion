@@ -45,7 +45,7 @@ def reproducir_incorrecto() -> None:
 
 def reproducir_sonido_gameover() -> None:
     """
-    Reproduce el efecto de sonido cuando se llega al fin del juego.
+    Reproduce el efecto de sonido cuando se llega al fin del juego, si el jugador pierde sus vidas.
 
     Args:
         None
@@ -56,6 +56,19 @@ def reproducir_sonido_gameover() -> None:
 
     game_over_sonido.play()
 
-sonido_correcto = cargar_sonido("sonidos/correcto.mp3", volumen=0.3)
-sonido_incorrecto = cargar_sonido("sonidos/incorrecto.mp3", volumen=0.3)
-game_over_sonido = cargar_sonido("sonidos/game over.mp3", volumen=0.3)
+def reproducir_sonido_winner() -> None:
+    """
+    Reproduce el efecto de sonido cuando se llega al fin del juego, si el ganador acaba con las preguntas.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+    winner_sonido.play()
+
+sonido_correcto = cargar_sonido("sonidos/correcto.mp3", volumen = 0.3)
+sonido_incorrecto = cargar_sonido("sonidos/incorrecto.mp3", volumen = 0.3)
+game_over_sonido = cargar_sonido("sonidos/game over.mp3", volumen = 0.3)
+winner_sonido = cargar_sonido("sonidos/ganador.mp3", volumen = 0.3)

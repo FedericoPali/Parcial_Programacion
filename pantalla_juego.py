@@ -139,7 +139,7 @@ def jugar() -> None:
 
         # Dibujar la interfaz
         pantalla.fill(ANTIQUEWHITE3)
-        if vidas > 0:
+        if vidas > 0 and len(lista_preguntadas) < len(matriz_preguntas):
             minutos = tiempo_total // 60  # División entera para obtener minutos
             """"
             Usamos la división entera (//) para calcular cuántos minutos completos hay en el total de segundos.
@@ -185,48 +185,94 @@ def jugar() -> None:
             pantalla.blit(tiempo_texto, (0,550))
 
         else:
-            pantalla.fill(BLACK)
-
-            imagen_perdiste = pygame.image.load("assets/GAME_OVER3.png")
-            sonido_reproducido = False  
-
-            if not sonido_reproducido:  # Solo se reproduce si aún no se ha hecho
-                reproducir_sonido_gameover()
-                sonido_reproducido = True
-            
-            pantalla.blit(imagen_perdiste, (120, 0, ANCHO_VENTANA, ALTO_VENTANA))
-            
-            escribiendo_nombre = True
-            while escribiendo_nombre:
-                for evento in pygame.event.get():
-                    if evento.type == pygame.QUIT:
-                        bandera = False
-                        escribiendo_nombre = False  # Salir también del bucle de escritura
-                    elif evento.type == pygame.KEYDOWN:
-                        if evento.key == pygame.K_ESCAPE:
-                            bandera = False  # Salir del juego
-                            escribiendo_nombre = False  # Salir de este bucle
-                        elif evento.key == pygame.K_BACKSPACE and len(usuario) > 0:
-                            usuario = usuario[:-1]  # Borrar último carácter
-                        elif evento.key == pygame.K_RETURN and usuario.strip() != "":
-                            escribiendo_nombre = False  # Salir de este bucle si el nombre no está vacío
-                            bandera = False
-                    elif evento.type == pygame.TEXTINPUT:
-                        usuario += evento.text  # Agregar texto ingresado
-
-                # Dibujar pantalla mientras escribe
+            if vidas == 0:  # Si el jugador pierde todas las vidas
                 pantalla.fill(BLACK)
+
+                imagen_perdiste = pygame.image.load("assets/GAME_OVER3.png")
+                sonido_reproducido = False  
+
+                if not sonido_reproducido:  # Solo se reproduce si aún no se ha hecho
+                    reproducir_sonido_gameover()
+                    sonido_reproducido = True
+                
                 pantalla.blit(imagen_perdiste, (120, 0, ANCHO_VENTANA, ALTO_VENTANA))
+                
+                escribiendo_nombre = True
+                while escribiendo_nombre:
+                    for evento in pygame.event.get():
+                        if evento.type == pygame.QUIT:
+                            bandera = False
+                            escribiendo_nombre = False  # Salir también del bucle de escritura
+                        elif evento.type == pygame.KEYDOWN:
+                            if evento.key == pygame.K_ESCAPE:
+                                bandera = False  # Salir del juego
+                                escribiendo_nombre = False  # Salir de este bucle
+                            elif evento.key == pygame.K_BACKSPACE and len(usuario) > 0:
+                                usuario = usuario[:-1]  # Borrar último carácter
+                            elif evento.key == pygame.K_RETURN and usuario.strip() != "":
+                                escribiendo_nombre = False  # Salir de este bucle si el nombre no está vacío
+                                bandera = False
+                        elif evento.type == pygame.TEXTINPUT:
+                            usuario += evento.text  # Agregar texto ingresado
 
-                # Mostrar rectángulo para ingresar el nombre
-                rectangulo_nombre = pygame.draw.rect(pantalla, YELLOW1, (150, 400, ANCHO_RECTANGULO_RESPUESTA, ALTO_RECTANGULO_RESPUESTA))
-                texto_ingrese_nombre = fuente.render("Ingrese su nombre:", True, WHITE)
-                pantalla.blit(texto_ingrese_nombre, (150, 360))
+                    # Dibujar pantalla mientras escribe
+                    pantalla.fill(BLACK)
+                    pantalla.blit(imagen_perdiste, (120, 0, ANCHO_VENTANA, ALTO_VENTANA))
 
-                # Mostrar el texto ingresado
-                texto_usuario = fuente.render(usuario, True, BLACK)
-                pantalla.blit(texto_usuario, (rectangulo_nombre.x + 10, rectangulo_nombre.y + 10))
-                pygame.display.flip()
+                    # Mostrar rectángulo para ingresar el nombre
+                    rectangulo_nombre = pygame.draw.rect(pantalla, YELLOW1, (150, 400, ANCHO_RECTANGULO_RESPUESTA, ALTO_RECTANGULO_RESPUESTA))
+                    texto_ingrese_nombre = fuente.render("Ingrese su nombre:", True, WHITE)
+                    pantalla.blit(texto_ingrese_nombre, (150, 360))
+
+                    # Mostrar el texto ingresado
+                    texto_usuario = fuente.render(usuario, True, BLACK)
+                    pantalla.blit(texto_usuario, (rectangulo_nombre.x + 10, rectangulo_nombre.y + 10))
+                    pygame.display.flip()
+
+            elif len(lista_preguntadas) == len(matriz_preguntas):  # Si se completaron todas las preguntas
+                pantalla.fill(BLACK)
+
+                imagen_ganaste = pygame.image.load("assets/WINNER.png")
+                imagen_ganaste = pygame.transform.scale(imagen_ganaste, (400,350))
+                sonido_reproducido = False  
+
+                if not sonido_reproducido:  # Solo se reproduce si aún no se ha hecho
+                    reproducir_sonido_winner()  # Cambiar por un sonido de "ganador" si existe
+                    sonido_reproducido = True
+                
+                pantalla.blit(imagen_ganaste, (200, 0, ANCHO_VENTANA, ALTO_VENTANA))
+                
+                escribiendo_nombre = True
+                while escribiendo_nombre:
+                    for evento in pygame.event.get():
+                        if evento.type == pygame.QUIT:
+                            bandera = False
+                            escribiendo_nombre = False  # Salir también del bucle de escritura
+                        elif evento.type == pygame.KEYDOWN:
+                            if evento.key == pygame.K_ESCAPE:
+                                bandera = False  # Salir del juego
+                                escribiendo_nombre = False  # Salir de este bucle
+                            elif evento.key == pygame.K_BACKSPACE and len(usuario) > 0:
+                                usuario = usuario[:-1]  # Borrar último carácter
+                            elif evento.key == pygame.K_RETURN and usuario.strip() != "":
+                                escribiendo_nombre = False  # Salir de este bucle si el nombre no está vacío
+                                bandera = False
+                        elif evento.type == pygame.TEXTINPUT:
+                            usuario += evento.text  # Agregar texto ingresado
+
+                    # Dibujar pantalla mientras escribe
+                    pantalla.fill(BLACK)
+                    pantalla.blit(imagen_ganaste, (200, 0, ANCHO_VENTANA, ALTO_VENTANA))
+
+                    # Mostrar rectángulo para ingresar el nombre
+                    rectangulo_nombre = pygame.draw.rect(pantalla, YELLOW1, (150, 400, ANCHO_RECTANGULO_RESPUESTA, ALTO_RECTANGULO_RESPUESTA))
+                    texto_ingrese_nombre = fuente.render("Ingrese su nombre:", True, WHITE)
+                    pantalla.blit(texto_ingrese_nombre, (150, 360))
+
+                    # Mostrar el texto ingresado
+                    texto_usuario = fuente.render(usuario, True, BLACK)
+                    pantalla.blit(texto_usuario, (rectangulo_nombre.x + 10, rectangulo_nombre.y + 10))
+                    pygame.display.flip()
 
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE:

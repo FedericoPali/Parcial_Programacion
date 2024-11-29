@@ -61,7 +61,6 @@ def ranking() -> None:
 
         for i in range(len(matriz_ranking)):
             if top_1 == False:
-                pantalla.blit(imagen_coronita,(200,55))
                 texto = f"{matriz_ranking[i][0]} || {matriz_ranking[i][1]} || {matriz_ranking[i][2]}"
                 top_1 = True
             else:
@@ -69,7 +68,7 @@ def ranking() -> None:
                 usuario, coordenadas = centrar_texto(texto, fuente, BLACK, rectangulos_ranking[i])  
                 pantalla.blit(usuario, coordenadas)
         
-        pantalla.blit(imagen_coronita,(180,55))
+        pantalla.blit(imagen_coronita,(290,55))
 
         pygame.display.flip()
     
